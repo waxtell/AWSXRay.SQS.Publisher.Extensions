@@ -243,16 +243,24 @@ namespace AWSXRay.SQS.Publisher.Extensions
             {
                 request.Headers[TraceHeader.HeaderKey] = traceHeader.ToString();
 
+                if (request.Parameters.Any(p => p.Value == "AWSTraceHeader"))
+                {
+                    return;
+                }
+
                 var index = request
                                 .Parameters
-                                    .Where(x => x.Key.StartsWith("MessageSystemAttribute"))
-                                    .Select(x => int.TryParse(x.Value.Split('.')[1], out var idx)?idx:0)
-                                    .Union(new[] { 0 })
-                                    .Max() + 1;
+                                .Where(x => x.Key.StartsWith("MessageSystemAttribute"))
+                                .Select(x => int.TryParse(x.Value.Split('.')[1], out var idx) ? idx : 0)
+                                .Union(new[] {0})
+                                .Max() + 1;
 
-                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Name", StringUtils.FromString("AWSTraceHeader"));
-                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Value.DataType", StringUtils.FromString("String"));
-                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Value" + "." + "StringValue", StringUtils.FromString(traceHeader.ToString()));
+                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Name",
+                    StringUtils.FromString("AWSTraceHeader"));
+                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Value.DataType",
+                    StringUtils.FromString("String"));
+                request.Parameters.Add("MessageSystemAttribute" + "." + index + "." + "Value" + "." + "StringValue",
+                    StringUtils.FromString(traceHeader.ToString()));
             }
         }
 
