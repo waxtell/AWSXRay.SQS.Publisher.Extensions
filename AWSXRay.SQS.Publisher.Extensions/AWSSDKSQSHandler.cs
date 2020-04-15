@@ -1,5 +1,4 @@
 ﻿using Amazon.Runtime.Internal;
-using Amazon.SQS;
 
 namespace AWSXRay.SQS.Publisher.Extensions
 {
@@ -14,22 +13,11 @@ namespace AWSXRay.SQS.Publisher.Extensions
         // ReSharper disable once InconsistentNaming
         public static void RegisterXRayForSQS()
         {
-            _customizer = GetCustomizer();
-            _customizer.AddType(typeof(IAmazonSQS));
-        }
+            _customizer = new SQSXRayPipelineCustomizer();
 
-        private static SQSXRayPipelineCustomizer GetCustomizer()
-        {
-            if (_customizer == null)
-            {
-                _customizer = new SQSXRayPipelineCustomizer();
-                
-                RuntimePipelineCustomizerRegistry
-                    .Instance
-                    .Register(_customizer);
-            }
-
-            return _customizer;
+            RuntimePipelineCustomizerRegistry
+                .Instance
+                .Register(_customizer);
         }
     }
 }

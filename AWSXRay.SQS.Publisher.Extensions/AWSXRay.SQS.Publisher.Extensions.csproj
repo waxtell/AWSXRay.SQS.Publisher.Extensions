@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    <Version>1.0.0</Version>
+    <Version>1.0.3</Version>
     <Authors>Will Axtell</Authors>
     <Description>AWS XRay pipeline handler that will proliferate the XRay TraceHeader across SendMessage and SendMessageBatch calls.</Description>
     <PackageProjectUrl>https://github.com/waxtell/AWSXRay.SQS.Publisher.Extensions</PackageProjectUrl>
